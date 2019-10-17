@@ -1,0 +1,20 @@
+.item {
+	display: flex;
+	padding: 0 20px;
+}
+.item ul {
+	margin-top: 0;
+}
+.item li {
+	list-style: none;
+	padding-left: 5px;
+}
+.item li h3 {
+	margin-top: 0;
+}
+.item li p {
+	margin-top: 0;
+}
+.item img {
+	width: 200px;
+}

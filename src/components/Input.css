@@ -1,0 +1,35 @@
+.inputForm {
+	max-width: 400px;
+ 	padding-top: 20px;
+ 	margin: 0 auto;
+}
+.inputForm ul {
+	padding: 0; 
+}
+.inputForm li {
+	list-style: none;
+	margin: 5px;	
+    padding: 5px;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+li input, li button {
+	padding: 5px;
+	border-radius: 30px;
+    border: solid 1px gray;
+    font-size: 25px;
+    outline: none;
+}
+li input {
+	padding-left: 15px; 
+}
+.title {
+	text-align: center;
+	font-size: 30px;
+	font-weight: bold;
+	text-transform: uppercase;
+}
+.inputName:hover, .submit:hover {
+  	box-shadow: 0 0 2px 1px gray;
+}

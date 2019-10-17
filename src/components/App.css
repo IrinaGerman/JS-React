@@ -1,0 +1,16 @@
+.container {
+    max-width: 1580px;
+    min-width: 320px;
+    padding: 0 25px;
+    margin: 0 auto;
+}
+.wrongRequest {
+    margin: 0 auto;
+    text-align: center;
+    font-size: 30px;
+    padding-top: 30px; 
+}
+.results {
+    font-size: 20px;
+    padding: 20px 40px;  
+}
