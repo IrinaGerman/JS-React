@@ -3,57 +3,87 @@ import './Pagination.css';
 import {connect} from 'react-redux';
 
 class Pagination extends React.Component {
-  	constructor() {
-   		super();
-   		this.classNamePrev = '';
-   		this.classNameNext = '';
-   		this.onClickPrev = this.onClickPrev.bind(this);
-    	this.onClickNext = this.onClickNext.bind(this);
-  }
-
-  onClickPrev() {
-    	if (this.props.page !== 1) {
-    		this.classNamePrev = 'active';
-    		this.props.onPrev();
-    	} if (this.props.page === 2) {
-    		this.classNamePrev = '';
-    	}
-  }
-
-  onClickNext() {
-    	this.lastPage = Math.ceil(this.props.totalCount / this.props.perPage);
-    	if (this.props.page !== this.lastPage) {
-    		this.classNameNext = 'active';
-    		this.classNamePrev = 'active';
-    		this.props.onNext();
-    	} if (this.props.page === (this.lastPage - 1)) {
-    		this.classNameNext = '';
-    	}
+  constructor() {
+    super();
+    this.classNamePrev = '';
+    this.classNameNext = '';
+    this.onClickPrev = this.onClickPrev.bind(this);
+    this.onClickNext = this.onClickNext.bind(this);
   }
 
   shouldComponentUpdate(nextProps) {
-    if (this.props.list !== nextProps.list) {
-      console.log("36", this.classNamePrev);
+    const {
+      list,
+    } = this.props;
+    if (list !== nextProps.list) {
+      console.log('36', this.classNamePrev);
       return true;
     }
     return true;
   }
 
-  render() {   
-    	this.lastPage = Math.ceil(this.props.totalCount / this.props.perPage);
-    	if (this.props.totalCount > this.props.perPage && this.props.page !== this.lastPage) {
-   			this.classNameNext = 'active';
-        console.log("46", this.classNamePrev);
-   		} if (this.props.page === 1) {
-        console.log("47", this.classNamePrev);
-        this.classNamePrev = '';
-      }
+  onClickPrev() {
+    const {
+      page, onPrev,
+    } = this.props;
+    if (page !== 1) {
+      this.classNamePrev = 'active';
+      onPrev();
+    } if (page === 2) {
+      this.classNamePrev = '';
+    }
+  }
 
-    	return (
-			<ul className="pagination">
-				<li><button className={`but page-prev ${this.classNamePrev}`} onClick={this.onClickPrev}>Previous</button></li>
-				<li><button className="but page-center">{this.props.page}</button></li>
-				<li><button className={`but page-next ${this.classNameNext}`} onClick={this.onClickNext}>Next</button></li></ul>
+  onClickNext() {
+    const {
+      page, totalCount, perPage, onNext,
+    } = this.props;
+    this.lastPage = Math.ceil(totalCount / perPage);
+    if (page !== this.lastPage) {
+      this.classNameNext = 'active';
+      this.classNamePrev = 'active';
+      onNext();
+    } if (page === (this.lastPage - 1)) {
+      this.classNameNext = '';
+    }
+  }
+
+  render() {
+    const {
+      page, totalCount, perPage,
+    } = this.props;
+    this.lastPage = Math.ceil(totalCount / perPage);
+    if (totalCount > perPage && page !== this.lastPage) {
+      this.classNameNext = 'active';
+    } if (page === 1) {
+      this.classNamePrev = '';
+    }
+    return (
+      <ul className="pagination">
+        <li>
+          <button
+            type="button"
+            className={`but page-prev ${this.classNamePrev}`}
+            onClick={this.onClickPrev}>
+            Previous
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            className="but page-center">
+            {page}
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            className={`but page-next ${this.classNameNext}`}
+            onClick={this.onClickNext}>
+            Next
+          </button>
+        </li>
+      </ul>
     );
   }
 }

@@ -8,10 +8,10 @@ import './App.css';
 class App extends React.Component {
   render() {
     return (
-			<div>
-				<Input/>
-				<List/>
-			</div>
+      <div>
+        <Input />
+        <List />
+      </div>
     );
   }
 }

@@ -10,62 +10,75 @@ class List extends React.Component {
     this.onSelect = this.onSelect.bind(this);
   }
 
-  onSelect(page, url, find, perPage) {
-    this.urlName = `${url}q=${find}+in:name&per_page=${perPage}&page=${page}`;
-    fetch(this.urlName)
-      .then((promise) => promise.json())
-      .then((promise) => {
-        if (!promise.message) {
-          this.props.onTotalCount(promise.total_count);
-          this.props.onSelectItems(promise.items);
-        } else {
-          this.props.onRateLimit();
-          this.props.onFind();
-          this.props.onPage();
-        }
-      });
-  }
-
   shouldComponentUpdate(nextProps) {
-    if (this.props.find !== nextProps.find && this.props.page !== nextProps.page) {
-      this.onSelect(nextProps.page, this.props.url, nextProps.find, this.props.perPage);
+    const {
+      find, page, url, perPage, list,
+    } = this.props;
+    if (find !== nextProps.find && page !== nextProps.page) {
+      this.onSelect(nextProps.page, url, nextProps.find, perPage);
       return false;
-    } if (this.props.find !== nextProps.find) {
-      this.onSelect(this.props.page, this.props.url, nextProps.find, this.props.perPage);
+    } if (find !== nextProps.find) {
+      this.onSelect(page, url, nextProps.find, perPage);
       return false;
-    } if (this.props.page !== nextProps.page) {
-      this.onSelect(nextProps.page, this.props.url, this.props.find, this.props.perPage);
+    } if (page !== nextProps.page) {
+      this.onSelect(nextProps.page, url, find, perPage);
       return false;
-    } if (this.props.list !== nextProps.list) {
+    } if (list !== nextProps.list) {
       return true;
     }
     return false;
   }
 
+  onSelect(page, url, find, perPage) {
+    const {
+      onSelectItems, onTotalCount, onRateLimit, onFind, onPage,
+    } = this.props;
+    this.urlName = `${url}q=${find}+in:name&per_page=${perPage}&page=${page}`;
+    fetch(this.urlName)
+      .then((promise) => promise.json())
+      .then((promise) => {
+        if (!promise.message) {
+          onTotalCount(promise.total_count);
+          onSelectItems(promise.items);
+        } else {
+          onRateLimit();
+          onFind();
+          onPage();
+        }
+      });
+  }
+
   render() {
     const content = [];
-
-    if (Array.isArray(this.props.list) && (this.props.list[0])) {
-      content.push((this.props.list).map((item) =>
-        (<Item
-                    key={ item.id }
-                    image={ item.owner.avatar_url }
-                    name={ item.name }
-                    owner={ item.owner.login }
-                    language={ item.language }
-                    watchers={ item.watchers_count }
-                    forks={ item.forks_count }
-                    stargazers={ item.stargazers_count }
-                />)));
+    const {
+      list, totalCount,
+    } = this.props;
+    if (Array.isArray(list) && (list[0])) {
+      content.push((list).map((item) =>
+        (
+          <Item
+            key={item.id}
+            image={item.owner.avatar_url}
+            name={item.name}
+            owner={item.owner.login}
+            language={item.language}
+            watchers={item.watchers_count}
+            forks={item.forks_count}
+            stargazers={item.stargazers_count}
+          />
+        )));
       return (
-                <div>
-                    <div className="results">results: {this.props.totalCount}</div>
-                    <div>{content}</div>
-                    <Pagination/>
-                </div>
+        <div>
+          <div className="results">
+              results:
+            {totalCount}
+          </div>
+          <div>{content}</div>
+          <Pagination />
+        </div>
       );
     } return (
-                <div className="message">{this.props.list}</div>
+      <div className="message">{list}</div>
     );
   }
 }
